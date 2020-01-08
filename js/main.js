@@ -39,6 +39,8 @@ function fetchKittenRepos() {
 }
 
 const buildCards = (repos) => {
+  const loader = document.querySelector('.loader');
+  loader.classList.add('hide-loader');
   for (let i = 0; i < repos.length; i++) {
     let owner = repos[i].owner.login;
     let repoName = repos[i].name;

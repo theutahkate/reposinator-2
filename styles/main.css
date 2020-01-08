@@ -230,3 +230,22 @@ ul.card--commit-list {
 .sad-trombone {
   margin: 2rem auto;
 }
+
+/* ======= LOADER ======= */
+
+.loader {
+  margin: 0 auto;
+}
+
+.loader img {
+  width: 20rem;
+  margin: 0 auto;
+}
+
+.loader .heading--tier-2 {
+  text-align: center;
+}
+
+.hide-loader {
+  display: none;
+}
