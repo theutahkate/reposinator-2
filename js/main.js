@@ -1,5 +1,12 @@
-const baseUrl = 'https://api.github.com/';
+const baseUrl = 'https://api.github.com';
+const repoSearch = '/search/repositories';
+const normalUrl = `${baseUrl}${repoSearch}?q=stars%3A>%3D10000&per_page=100`;
+const kittenUrl = `${baseUrl}${repoSearch}?q=kitten&watchers_count:>10000&order=desc`;
+
+const h1 = document.querySelector('h1');
+const loader = document.querySelector('.loader');
 const results = document.querySelector('.results--container');
+
 const kittenBtn = document.querySelector('.btn-kitten');
 let isKittens = false;
 
@@ -7,8 +14,8 @@ kittenBtn.addEventListener('click', function() {
   toggleKittenMode()
 });
 
-const fetchRepos = () => {
-  fetch(`${baseUrl}search/repositories?q=stars%3A>%3D10000&per_page=100`)
+const fetchRepos = (url) => {
+  fetch(url)
     .then(handleErrors)
     .then(response => response.json())
     .then(data => buildCards(data.items))
@@ -18,28 +25,28 @@ const fetchRepos = () => {
 const toggleKittenMode = () => {
   results.innerHTML = '';
   if (!isKittens) {
-    kittenBtn.innerHTML = '<img src="img/sadcat.png" alt="orange tabby cartoon cat, sobbing because you hate kittens" class="sad-kitten">No Kitten Mode'
-    fetchKittenRepos()
+    kittenBtn.innerHTML = '<img src="img/sadcat.png" alt="orange tabby cartoon cat, sobbing because you hate kittens" class="sad-kitten">Non-Kitten Mode';
+    h1.innerHTML = `<span class="tagline">Vanilla Style</span>
+                        Reposinator
+                        <span class="tagline"> Github's most KITTEN-Y repositories</span>`
+    loader.classList.remove('hide-loader');
+
+    fetchRepos(kittenUrl)
     isKittens = true;
     document.getElementsByTagName('body')[0].classList.add('kitten-mode')
   } else {
     kittenBtn.innerText = 'Kitten Mode';
-    fetchRepos()
+    h1.innerHTML = `<span class="tagline">Vanilla Style</span>
+                        Reposinator
+                        <span class="tagline"> Github's most popular repositories</span>`
+    loader.classList.remove('hide-loader');
+    fetchRepos(normalUrl)
     isKittens = false;
     document.querySelector('.kitten-mode').classList.remove('kitten-mode')
   }
 }
 
-function fetchKittenRepos() {
-  fetch(`${baseUrl}search/repositories?q=kitten&watchers_count:>10000&private:false&order=desc`)
-    .then(handleErrors)
-    .then(response => response.json())
-    .then(data => buildCards(data.items))
-    .catch(error => console.log(error))
-}
-
 const buildCards = (repos) => {
-  const loader = document.querySelector('.loader');
   loader.classList.add('hide-loader');
   for (let i = 0; i < repos.length; i++) {
     let owner = repos[i].owner.login;
@@ -94,7 +101,7 @@ const toggleCommits = (repoName, owner, cardIndex) => {
 
 const fetchCommits = (repoName, owner, cardIndex) => {
   const commitsSince = new Date(Date.now() - 86400 * 1000).toISOString()
-  fetch(`${baseUrl}repos/${owner}/${repoName}/commits?since=${commitsSince}`)
+  fetch(`${baseUrl}/repos/${owner}/${repoName}/commits?since=${commitsSince}`)
     .then(handleErrors)
     .then(response => response.json())
     .then(data => buildCommits(data, cardIndex))
@@ -136,6 +143,7 @@ const handleErrors = (response) => {
 }
 
 const buildErrorMessage = () => {
+  loader.classList.add('hide-loader');
   results.innerHTML = '';
   const errorDiv = document.createElement('div');
   errorDiv.classList.add('card', 'error');
@@ -146,4 +154,4 @@ const buildErrorMessage = () => {
   results.appendChild(errorDiv);
 }
 
-fetchRepos();
+fetchRepos(normalUrl);
