@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Muli:300,400,700&display=swap');
+
+:root {
+  --white: #fff;
+  --gray: #485363;
+  --light-gray: #b8c0cb;
+  --primary: #003278;
+  --secondary: #49c2ff;
+  --tertiary: #c50052;
+  --text-default: #00122c;
+
+  --font-family-display: Merriweather, Georgia, 'Times New Roman', Times, serif;
+  --font-family-main: Muli, Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: red;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  max-width: 100rem;
+  font-family: var(--font-family-main);
+  margin: 0 auto;
+  padding: 3rem;
+  background-color: var(--primary);
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--text-default);
+}
+
+.sr-only {
+  position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  padding: 0;
+  margin: -0.1rem;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.text-light {
+  color: var(--white);
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+header {
+  position: relative;
+}
+
+.heading--tier-1 {
+  margin-bottom: 4rem;
+  padding-bottom: 1rem;
+  border-bottom: 0.1rem solid;
+  font-family: var(--font-family-display);
+  font-weight: 600;
+  font-size: 6rem;
+}
+
+.heading--tier-2 {
+  font-family: var(--font-family-display);
+  font-weight: 600;
+  font-size: 2.5rem;
+}
+
+.tagline {
+  display: block;
+  font-size: 2rem;
+  letter-spacing: 0.1rem;
+  line-height: 0.5;
+}
+
+.btn {
+  position: absolute;
+  border: 0.2rem solid transparent;
+  border-radius: 0.4rem;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: var(--font-family-display);
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.75);
+  background-color: var(--tertiary);
+  color: var(--white);
+}
+
+.btn:hover {
+  background-color: var(--white);
+  color: var(--text-default);
+  border-color: var(--tertiary);
+}
+
+.btn-kitten {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 1rem 2rem;
+}
+
+.card--btn {
+  width: calc(100% - 2rem);
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+}
