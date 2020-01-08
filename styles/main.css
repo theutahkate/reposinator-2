@@ -79,6 +79,18 @@ header {
   line-height: 0.5;
 }
 
+@media only screen and (max-width: 600px) {
+  .heading--tier-1 {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .tagline {
+    font-size: 1.75rem;
+    line-height: normal;
+  }
+}
+
 /* ======= BUTTONS ======= */
 
 .btn {
@@ -135,6 +147,18 @@ header {
 .btn-card:focus,
 .card--heading__link:focus {
   outline: var(--text-default) dashed 0.2rem;
+}
+
+@media only screen and (max-width: 750px) {
+  .btn-kitten {
+    position: relative;
+    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 23rem;
+    margin-bottom: 2rem;
+    padding: 1rem 2rem;
+  }
 }
 
 /* ======= KITTEN MODE ======= */
