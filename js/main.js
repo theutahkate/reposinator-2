@@ -1,13 +1,40 @@
 const baseUrl = 'https://api.github.com/';
+const results = document.querySelector('.results--container');
+const kittenBtn = document.querySelector('.btn-kitten');
+let isKittens = false;
 
-(function fetchRepos() {
+kittenBtn.addEventListener('click', function() {
+  toggleKittenMode()
+});
+
+const fetchRepos = () => {
   fetch(`${baseUrl}search/repositories?q=stars%3A>%3D10000&per_page=100`)
     .then(response => response.json())
     .then(data => buildCards(data.items))
-})();
+};
+
+const toggleKittenMode = () => {
+  results.innerHTML = '';
+  if (!isKittens) {
+    kittenBtn.innerHTML = '<img src="img/sadcat.png" alt="orange tabby cartoon cat, sobbing because you hate kittens" class="sad-kitten">No Kitten Mode'
+    fetchKittenRepos()
+    isKittens = true;
+    document.getElementsByTagName('body')[0].classList.add('kitten-mode')
+  } else {
+    kittenBtn.innerText = 'Kitten Mode';
+    fetchRepos()
+    isKittens = false;
+    document.querySelector('.kitten-mode').classList.remove('kitten-mode')
+  }
+}
+
+function fetchKittenRepos() {
+  fetch(`${baseUrl}search/repositories?q=kitten&watchers_count:>10000&private:false&order=desc`)
+    .then(response => response.json())
+    .then(data => buildCards(data.items))
+}
 
 const buildCards = (repos) => {
-  const results = document.querySelector('.results--container');
   for (let i = 0; i < repos.length; i++) {
     let owner = repos[i].owner.login;
     let repoName = repos[i].name;
@@ -91,3 +118,5 @@ const buildCommits = (commits, cardIndex) => {
   }
   commitsBtn.innerText = 'Hide Commits';
 }
+
+fetchRepos();

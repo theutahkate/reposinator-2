@@ -16,10 +16,6 @@
   --box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.75);
 }
 
-body {
-  background-color: red;
-}
-
 html {
   font-size: 62.5%;
 }
@@ -54,14 +50,17 @@ body {
   font-weight: bold;
 }
 
+/* ======= HEADER ======= */
+
 header {
   position: relative;
 }
 
 .heading--tier-1 {
   margin-bottom: 4rem;
-  padding-bottom: 1rem;
-  border-bottom: 0.1rem solid;
+  padding: 2.5rem 1rem;
+  border: 0.2rem solid transparent;
+  border-bottom-color: var(--white);
   font-family: var(--font-family-display);
   font-weight: 600;
   font-size: 6rem;
@@ -79,6 +78,8 @@ header {
   letter-spacing: 0.1rem;
   line-height: 0.5;
 }
+
+/* ======= BUTTONS ======= */
 
 .btn {
   position: absolute;
@@ -107,10 +108,15 @@ header {
   outline-offset: 0.5rem;
 }
 
+.btn-kitten span {
+  vertical-align: middle;
+}
+
 .btn-kitten {
-  right: 0;
+  right: 2rem;
   top: 50%;
   transform: translateY(-50%);
+  width: 21rem;
   padding: 1rem 2rem;
 }
 
@@ -130,6 +136,33 @@ header {
 .card--heading__link:focus {
   outline: var(--text-default) dashed 0.2rem;
 }
+
+/* ======= KITTEN MODE ======= */
+
+.kitten-mode {
+  background-image: url('../img/cat.svg');
+  background-size: 5rem;
+  background-repeat: repeat;
+}
+
+.kitten-mode .heading--tier-1 {
+  background-color: var(--primary);
+  border-color: var(--white);
+  border-radius: 4px;
+}
+
+.kitten-mode .btn-kitten {
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+}
+
+.sad-kitten {
+  width: 3.5rem;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 1rem;
+}
+
+/* ======= RESULTS AND CARDS ======= */
 
 .results--container {
   display: flex;
@@ -174,6 +207,8 @@ header {
   font-size: 1.3rem;
   color: var(--gray);
 }
+
+/* ======= COMMITS ======= */
 
 ul.card--commit-list {
   list-style-type: none;
