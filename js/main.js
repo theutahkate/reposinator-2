@@ -9,8 +9,10 @@ kittenBtn.addEventListener('click', function() {
 
 const fetchRepos = () => {
   fetch(`${baseUrl}search/repositories?q=stars%3A>%3D10000&per_page=100`)
+    .then(handleErrors)
     .then(response => response.json())
     .then(data => buildCards(data.items))
+    .catch(error => console.log(error))
 };
 
 const toggleKittenMode = () => {
@@ -30,8 +32,10 @@ const toggleKittenMode = () => {
 
 function fetchKittenRepos() {
   fetch(`${baseUrl}search/repositories?q=kitten&watchers_count:>10000&private:false&order=desc`)
+    .then(handleErrors)
     .then(response => response.json())
     .then(data => buildCards(data.items))
+    .catch(error => console.log(error))
 }
 
 const buildCards = (repos) => {
@@ -89,8 +93,10 @@ const toggleCommits = (repoName, owner, cardIndex) => {
 const fetchCommits = (repoName, owner, cardIndex) => {
   const commitsSince = new Date(Date.now() - 86400 * 1000).toISOString()
   fetch(`${baseUrl}repos/${owner}/${repoName}/commits?since=${commitsSince}`)
+    .then(handleErrors)
     .then(response => response.json())
     .then(data => buildCommits(data, cardIndex))
+    .catch(error => console.log(error))
 }
 
 const buildCommits = (commits, cardIndex) => {
@@ -117,6 +123,25 @@ const buildCommits = (commits, cardIndex) => {
     wrapper.appendChild(p);
   }
   commitsBtn.innerText = 'Hide Commits';
+}
+
+const handleErrors = (response) => {
+  if (!response.ok) {
+    buildErrorMessage();
+    throw Error(response.statusText)
+  }
+  return response;
+}
+
+const buildErrorMessage = () => {
+  results.innerHTML = '';
+  const errorDiv = document.createElement('div');
+  errorDiv.classList.add('card', 'error');
+  errorDiv.innerHTML = `<img src="img/sadtrombone.gif" alt="" class="sad-trombone">
+                        <p class="heading--tier-2">Womp womp...</p>
+                        <p class="heading--tier-2">Something went wrong.</p>
+                        <p>Maybe refreshing the page will fix it?</p>`;
+  results.appendChild(errorDiv);
 }
 
 fetchRepos();
