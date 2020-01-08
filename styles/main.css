@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Merriweather:400,700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Muli:300,400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Muli:300,700&display=swap');
 
 :root {
   --white: #fff;
@@ -12,6 +12,8 @@
 
   --font-family-display: Merriweather, Georgia, 'Times New Roman', Times, serif;
   --font-family-main: Muli, Arial, Helvetica, sans-serif;
+
+  --box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.75);
 }
 
 body {
@@ -86,9 +88,9 @@ header {
   text-decoration: none;
   font-weight: bold;
   font-family: var(--font-family-display);
-  -webkit-box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: var(--box-shadow);
+  -moz-box-shadow: var(--box-shadow);
+  box-shadow: var(--box-shadow);
   background-color: var(--tertiary);
   color: var(--white);
 }
@@ -106,10 +108,66 @@ header {
   padding: 1rem 2rem;
 }
 
-.card--btn {
+.btn-card {
   width: calc(100% - 2rem);
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   padding: 0.5rem 1rem;
+}
+
+.results--container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  position: relative;
+  min-width: 30rem;
+  width: calc(50% - 1.5rem);
+  margin: .75rem;
+  padding: 1rem 1rem 6rem 1rem;
+  background-color: var(--white);
+  border-radius: 0.4rem;
+  -webkit-box-shadow: var(--box-shadow);
+  -moz-box-shadow: var(--box-shadow);
+  box-shadow: var(--box-shadow);
+}
+
+.card--heading {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 0.1rem solid;
+}
+
+.card--heading__link {
+  text-decoration: none;
+  color: var(--text-default);
+}
+
+.card--heading__link:hover {
+  text-decoration: underline;
+}
+
+.icon-link {
+  display: inline;
+  width: 1.5rem;
+}
+
+.card--heading__subhead {
+  line-height: 1;
+  font-size: 1.3rem;
+  color: var(--gray);
+}
+
+.card--commit-list {
+  list-style-type: none;
+  padding-bottom: 0;
+  margin: 3rem 0 6rem;
+}
+
+.card--no-commits {
+  margin: 2rem 0;
+  font-weight: bold;
 }
