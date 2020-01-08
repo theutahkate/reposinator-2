@@ -1,5 +1,7 @@
+const baseUrl = 'https://api.github.com/';
+
 (function fetchRepos() {
-  fetch('https://api.github.com/search/repositories?q=stars%3A>%3D10000&per_page=100')
+  fetch(`${baseUrl}search/repositories?q=stars%3A>%3D10000&per_page=100`)
     .then(response => response.json())
     .then(data => buildCards(data.items))
 })();
@@ -7,24 +9,69 @@
 const buildCards = (repos) => {
   const results = document.querySelector('.results--container');
   for (let i = 0; i < repos.length; i++) {
-    let card = document.createElement('div')
-    card.classList.add('card')
-    card.innerHTML = `<div class="card--heading">
-                        <h2 class="heading--tier-2">
-                          <a href="${repos[i].html_url}" target="_blank" class="card--heading__link">
-                            ${repos[i].name}
-                            <img src="img/icon-link.svg" alt="" class="icon-link">
-                            <span class="sr-only">opens in new tab</span>
-                          </a>
-                        </h2>
-                        <p class="card--heading__subhead"><span class="text-bold">Author:</span> ${repos[i].owner.login}</p>
-                        <p class="card--heading__subhead"><span class="text-bold">Star Count:</span> ${repos[i].stargazers_count}</p>
-                      </div>
-                      <div class="card--desc">
-                        <p>${repos[i].description}</p>
-                      </div>
-                      <ul class="card--commit-list" aria-hidden="true"></ul>
-                      <button class="btn btn-card" id="card-${i}">Recent Commits`;
+    let owner = repos[i].owner.login;
+    let repoName = repos[i].name;
+
+    let card = document.createElement('div');
+    card.classList.add('card');
+    card.setAttribute('id', `card-${i}`)
+
+    let button = document.createElement('button');
+    button.classList.add('btn', 'btn-card');
+    button.innerText = 'Recent Commits';
+
+    card.innerHTML = `<div class="card--content-wrapper">
+                        <div class="card--heading">
+                          <h2 class="heading--tier-2">
+                            <a href="${repos[i].html_url}" target="_blank" class="card--heading__link">
+                              ${repoName}
+                              <img src="img/icon-link.svg" alt="" class="icon-link">
+                              <span class="sr-only">opens in new tab</span>
+                            </a>
+                          </h2>
+                          <p class="card--heading__subhead"><span class="text-bold">Author:</span> ${owner}</p>
+                          <p class="card--heading__subhead"><span class="text-bold">Star Count:</span> ${repos[i].stargazers_count}</p>
+                        </div>
+                        <div class="card--desc">
+                          <p>${repos[i].description}</p>
+                        </div>
+                        <ul class="card--commit-list" aria-hidden="true"></ul>
+                      </div>`;
+
+    button.addEventListener('click', function() {
+      getCommits(repoName, owner, i);
+    })
+    card.appendChild(button);
     results.appendChild(card);
+  }
+}
+
+
+const getCommits = (repoName, owner, cardIndex) => {
+  const commitsSince = new Date(Date.now() - 86400 * 1000).toISOString()
+  fetch(`${baseUrl}repos/${owner}/${repoName}/commits?since=${commitsSince}`)
+    .then(response => response.json())
+    .then(data => buildCommits(data, cardIndex))
+}
+
+const buildCommits = (commits, cardIndex) => {
+  if (commits.length) {
+    const ul = document.querySelector(`#card-${cardIndex} .card--commit-list`);
+    ul.setAttribute('aria-hidden', 'false');
+    for (let i = 0; i < commits.length; i++) {
+      const element = commits[i];
+      let li = document.createElement('li');
+      li.classList.add('commit');
+      li.innerHTML = `<div class="text-bold commit--author">${element.commit.author.name }</div>
+                      <div class="commit--date">${element.commit.author.date }</div>
+                      <div class="commit--message"><span class="text-bold">Message:</span> ${element.commit.message}</div>`;
+      ul.appendChild(li);
+    }
+  } else {
+    let wrapper = document.querySelector(`#card-${cardIndex} .card--content-wrapper`);
+    const p = document.createElement('p');
+    p.classList.add('card--no-commits');
+    p.innerHTML = '<p class="card--no-commits">No commits in the last 24 hours</p>';
+    wrapper.appendChild(p);
   }
 }

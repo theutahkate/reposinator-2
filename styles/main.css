@@ -93,6 +93,7 @@ header {
   box-shadow: var(--box-shadow);
   background-color: var(--tertiary);
   color: var(--white);
+  transition: 0.6s;
 }
 
 .btn:hover {
@@ -161,7 +162,7 @@ header {
   color: var(--gray);
 }
 
-.card--commit-list {
+ul.card--commit-list {
   list-style-type: none;
   padding-bottom: 0;
   margin: 3rem 0 6rem;
