@@ -35,19 +35,31 @@ const buildCards = (repos) => {
                         <div class="card--desc">
                           <p>${repos[i].description}</p>
                         </div>
-                        <ul class="card--commit-list" aria-hidden="true"></ul>
                       </div>`;
 
     button.addEventListener('click', function() {
-      getCommits(repoName, owner, i);
+      toggleCommits(repoName, owner, i);
     })
     card.appendChild(button);
     results.appendChild(card);
   }
 }
 
+const toggleCommits = (repoName, owner, cardIndex) => {
+  const ul = document.querySelector(`#card-${cardIndex} .card--commit-list`);
+  const noCommitsP = document.querySelector(`#card-${cardIndex} .card--no-commits`);
+  const commitsBtn = document.querySelector(`#card-${cardIndex} .btn-card`);
+  if (ul) {
+    ul.remove();
+    commitsBtn.innerText = 'Recent Commits';
+  } else if (noCommitsP) {
+    noCommitsP.remove();
+  } else {
+    fetchCommits(repoName, owner, cardIndex);
+  }
+}
 
-const getCommits = (repoName, owner, cardIndex) => {
+const fetchCommits = (repoName, owner, cardIndex) => {
   const commitsSince = new Date(Date.now() - 86400 * 1000).toISOString()
   fetch(`${baseUrl}repos/${owner}/${repoName}/commits?since=${commitsSince}`)
     .then(response => response.json())
@@ -55,9 +67,11 @@ const getCommits = (repoName, owner, cardIndex) => {
 }
 
 const buildCommits = (commits, cardIndex) => {
+  const commitsBtn = document.querySelector(`#card-${cardIndex} .btn-card`);
   if (commits.length) {
-    const ul = document.querySelector(`#card-${cardIndex} .card--commit-list`);
-    ul.setAttribute('aria-hidden', 'false');
+    let wrapper = document.querySelector(`#card-${cardIndex} .card--content-wrapper`);
+    const ul = document.createElement('ul');
+    ul.classList.add('card--commit-list');
     for (let i = 0; i < commits.length; i++) {
       const element = commits[i];
       let li = document.createElement('li');
@@ -67,6 +81,7 @@ const buildCommits = (commits, cardIndex) => {
                       <div class="commit--message"><span class="text-bold">Message:</span> ${element.commit.message}</div>`;
       ul.appendChild(li);
     }
+    wrapper.appendChild(ul);
   } else {
     let wrapper = document.querySelector(`#card-${cardIndex} .card--content-wrapper`);
     const p = document.createElement('p');
@@ -74,4 +89,5 @@ const buildCommits = (commits, cardIndex) => {
     p.innerHTML = '<p class="card--no-commits">No commits in the last 24 hours</p>';
     wrapper.appendChild(p);
   }
+  commitsBtn.innerText = 'Hide Commits';
 }
